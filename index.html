@@ -59,13 +59,10 @@
     }
 
     @keyframes fall {
-      to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0.9;
-      }
+      to { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
     }
 
-    /* hide the YouTube player */
+    /* Hide the embedded video */
     #bg-music {
       position: absolute;
       width: 0;
@@ -81,17 +78,13 @@
     <div id="message"></div>
   </div>
 
-  <!-- Taylor Swift YouTube Embed (replace VIDEO_ID with your fav song) -->
-  <iframe 
-    id="bg-music"
-    src="https://www.youtube.com/embed/K-a8s8OLBSE?autoplay=1&loop=1&playlist=K-a8s8OLBSE"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+  <!-- Embedded YouTube: Daylight (Instrumental) -->
+  
+::contentReference[oaicite:1]{index=1}
+
 
   <script>
-    // Your message
+    // Your heartfelt message
     const messageLines = [
       "Hi Nisha,",
       "",
@@ -114,30 +107,28 @@
 
     const messageDiv = document.getElementById("message");
 
-    // Typewriter effect
-    let text = messageLines.join("\n");
-    let i = 0;
+    // Typewriter animation
+    let text = messageLines.join("\n"), i = 0;
     function typeWriter() {
       if (i < text.length) {
         messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
         i++;
         setTimeout(typeWriter, 40);
       } else {
-        messageDiv.textContent = text; // remove cursor
+        messageDiv.textContent = text;
       }
     }
     typeWriter();
 
-    // Falling flowers 🌸
+    // Falling flower animation
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
-      const flowers = ["🌸","🌷","🌼","💮","🌺","🌻"];
-      flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+      const arr = ["🌸","🌷","🌼","💮","🌺","🌻"];
+      flower.innerHTML = arr[Math.floor(Math.random() * arr.length)];
       flower.style.left = Math.random() * 100 + "vw";
       flower.style.animationDuration = (4 + Math.random() * 5) + "s";
       document.body.appendChild(flower);
-
       setTimeout(() => flower.remove(), 10000);
     }
     setInterval(createFlower, 700);
@@ -145,5 +136,4 @@
 
 </body>
 </html>
-
 
