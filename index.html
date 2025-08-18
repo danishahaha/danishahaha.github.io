@@ -7,48 +7,53 @@
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #1b2735, #090a0f);
-      color: #fff;
-      font-family: 'Courier New', monospace;
       height: 100vh;
-      overflow: hidden;
+      background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
+      font-family: 'Comic Sans MS', 'Courier New', cursive;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      overflow: hidden;
+      color: #444;
     }
 
-    .star {
-      font-size: 18px;
-      white-space: pre;
-      margin-bottom: 20px;
-    }
-
-    .message {
-      font-size: 18px;
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
       max-width: 700px;
-      white-space: pre-wrap;
+      line-height: 1.7;
+      font-size: 18px;
       z-index: 2;
-      line-height: 1.6;
+      border: 2px dashed #ffb6c1;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #ff69b4;
     }
 
     .cursor {
       display: inline-block;
       width: 10px;
-      background: white;
+      background: #ff69b4;
       animation: blink 0.7s infinite;
     }
 
     @keyframes blink {
-      0%, 100% { background: white; }
+      0%, 100% { background: #ff69b4; }
       50% { background: transparent; }
     }
 
     .flower {
       position: fixed;
       top: -50px;
-      font-size: 24px;
+      font-size: 28px;
       animation: fall linear forwards;
       z-index: 1;
     }
@@ -56,67 +61,40 @@
     @keyframes fall {
       to {
         transform: translateY(110vh) rotate(360deg);
-        opacity: 0.8;
+        opacity: 0.9;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="star" id="star"></div>
-  <div class="message" id="message"></div>
+  <div class="card">
+    <div class="title">💌 A Note for Nisha 💌</div>
+    <div id="message"></div>
+  </div>
 
   <script>
-    // Star animation frames
-    const frames = [
-`   *
-  ***
- *****
-*******
- *****
-  ***
-   *`,
-`    *
-   ***
-  *****
- *******
-*********
- *******
-  *****
-   ***
-    *`
-    ];
-
-    // Longer heartfelt message 💌
+    // Longer, cute motivational message
     const messageLines = [
-      "Hi Nisha,",
+      "Hi Nisha 🌸,",
       "",
-      "I know you are not ready for a relationship right now, and that’s completely okay.",
-      "I don’t want you to feel rushed or pressured — your happiness and comfort mean the most to me.",
+      "I know you’re not ready for a relationship right now — and that’s okay 💖.",
+      "What matters most is that you’re comfortable, happy, and true to yourself.",
       "",
-      "What matters is that you are being true to yourself, and I deeply respect that.",
-      "I want you to know that I will always be here, quietly and patiently,",
-      "waiting for the day you feel ready — whether it’s soon or far in the future.",
+      "I just want you to know this: I will always be here, patiently waiting,",
+      "cheering for you, and respecting your pace. No rush, no pressure. 🌈",
       "",
-      "To me, you are not defined by perfection, but by the little things that make you who you are.",
-      "Your flaws, your strengths, and even your insecurities — they are all part of the person I admire.",
+      "Your little imperfections, your strengths, your dreams — they make you unique ✨.",
+      "And to me, you’re worth waiting for, no matter how long it takes. 💕",
       "",
-      "So take all the time you need, Nisha. I’m not going anywhere.",
-      "Some things in life are worth waiting for… and you are one of them.",
+      "So take your time, Nisha. I’ll be here, with hope and kindness,",
+      "because some people are worth waiting for… and you are one of them. 🌷",
       "",
-      "With patience,",
-      "Me"
+      "With patience and care,",
+      "— Me 🌼"
     ];
 
-    const starDiv = document.getElementById("star");
     const messageDiv = document.getElementById("message");
-
-    // Animate star
-    let frameIndex = 0;
-    setInterval(() => {
-      starDiv.textContent = frames[frameIndex % frames.length];
-      frameIndex++;
-    }, 600);
 
     // Typewriter effect
     let text = messageLines.join("\n");
@@ -136,15 +114,17 @@
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
-      flower.innerHTML = "🌸";
+      const flowers = ["🌸","🌷","🌼","💮","🌺","🌻"];
+      flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
       flower.style.left = Math.random() * 100 + "vw";
       flower.style.animationDuration = (4 + Math.random() * 5) + "s";
       document.body.appendChild(flower);
 
       setTimeout(() => flower.remove(), 10000);
     }
-    setInterval(createFlower, 600);
+    setInterval(createFlower, 700);
   </script>
 
 </body>
 </html>
+
