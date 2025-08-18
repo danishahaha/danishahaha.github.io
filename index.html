@@ -54,6 +54,20 @@
     @keyframes fall {
       to { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
     }
+    /* Play button (in case browser blocks autoplay) */
+    #playBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 18px;
+      background: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -63,13 +77,14 @@
     <div id="message"></div>
   </div>
 
-  <!-- Background music (romantic, copyright-free) -->
-  <audio id="bg-music" autoplay loop>
+  <!-- Background music -->
+  <audio id="bg-music" autoplay loop muted>
     <source src="https://cdn.pixabay.com/audio/2022/10/24/audio_2d3a2f3f70.mp3" type="audio/mpeg">
   </audio>
+  <button id="playBtn">🎵 Play Music</button>
 
   <script>
-    // Your heartfelt message
+    // Message content
     const messageLines = [
       "Hi Nisha,",
       "",
@@ -81,7 +96,7 @@
       "waiting for the day you feel ready, whether it’s soon or far in the future.",
       "",
       "To me, you are not defined by perfection, but by the little things that make you who you are.",
-      "Your flaws, your strengths, and even your insecurities — they are all part of the person I admire.",
+      "Your flaws, your strengths, and even your insecurities, they are all part of the person I admire.",
       "",
       "So take all the time you need, Nisha. I’m not going anywhere.",
       "Some things in life are worth waiting for… and you are one of them.",
@@ -91,8 +106,6 @@
     ];
 
     const messageDiv = document.getElementById("message");
-
-    // Typewriter effect
     let text = messageLines.join("\n");
     let i = 0;
     function typeWriter() {
@@ -106,7 +119,7 @@
     }
     typeWriter();
 
-    // Falling flowers animation
+    // Flowers falling
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
@@ -118,7 +131,26 @@
       setTimeout(() => flower.remove(), 10000);
     }
     setInterval(createFlower, 700);
+
+    // Music play fix
+    const music = document.getElementById("bg-music");
+    const playBtn = document.getElementById("playBtn");
+
+    // Unmute and play once user clicks anywhere
+    document.body.addEventListener("click", () => {
+      music.muted = false;
+      music.play();
+      playBtn.style.display = "none"; // Hide button after click
+    });
+
+    // Manual play button in case click event is missed
+    playBtn.addEventListener("click", () => {
+      music.muted = false;
+      music.play();
+      playBtn.style.display = "none";
+    });
   </script>
 
 </body>
 </html>
+
