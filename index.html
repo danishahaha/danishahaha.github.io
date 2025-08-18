@@ -8,7 +8,7 @@
       margin: 0;
       padding: 0;
       background: linear-gradient(to bottom, #1b2735, #090a0f);
-      color: #ffffff;
+      color: #fff;
       font-family: 'Courier New', monospace;
       height: 100vh;
       overflow: hidden;
@@ -19,19 +19,18 @@
       text-align: center;
     }
 
-    /* Star animation area */
     .star {
-      font-size: 20px;
-      line-height: 1.2;
+      font-size: 18px;
       white-space: pre;
       margin-bottom: 20px;
     }
 
     .message {
       font-size: 18px;
+      max-width: 700px;
       white-space: pre-wrap;
-      max-width: 600px;
       z-index: 2;
+      line-height: 1.6;
     }
 
     .cursor {
@@ -42,12 +41,10 @@
     }
 
     @keyframes blink {
-      0% { background: white; }
+      0%, 100% { background: white; }
       50% { background: transparent; }
-      100% { background: white; }
     }
 
-    /* Falling flowers */
     .flower {
       position: fixed;
       top: -50px;
@@ -70,39 +67,45 @@
   <div class="message" id="message"></div>
 
   <script>
-    // Star frames
+    // Star animation frames
     const frames = [
-`          *
-         ***
-        *****
-       *******
-        *****
-         ***
-          *`,
-`           *
-          ***
-         *****
-        *******
-       *********
-        *******
-         *****
-          ***
-           *`
+`   *
+  ***
+ *****
+*******
+ *****
+  ***
+   *`,
+`    *
+   ***
+  *****
+ *******
+*********
+ *******
+  *****
+   ***
+    *`
     ];
 
-    // Message
+    // Longer heartfelt message 💌
     const messageLines = [
       "Hi Nisha,",
       "",
-      "I know you’re not ready for a relationship right now.",
-      "That’s okay. I will always wait patiently, no matter how long it takes.",
-      "Your flaws, imperfections, and everything in between",
-      "they don’t push me away ,they make you real".
-
-      "Take all the time you need, Nisha".
-      "I’ll always be here.",
+      "I know you are not ready for a relationship right now, and that’s completely okay.",
+      "I don’t want you to feel rushed or pressured — your happiness and comfort mean the most to me.",
       "",
-      
+      "What matters is that you are being true to yourself, and I deeply respect that.",
+      "I want you to know that I will always be here, quietly and patiently,",
+      "waiting for the day you feel ready — whether it’s soon or far in the future.",
+      "",
+      "To me, you are not defined by perfection, but by the little things that make you who you are.",
+      "Your flaws, your strengths, and even your insecurities — they are all part of the person I admire.",
+      "",
+      "So take all the time you need, Nisha. I’m not going anywhere.",
+      "Some things in life are worth waiting for… and you are one of them.",
+      "",
+      "With patience,",
+      "Me"
     ];
 
     const starDiv = document.getElementById("star");
@@ -122,14 +125,14 @@
       if (i < text.length) {
         messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
         i++;
-        setTimeout(typeWriter, 50);
+        setTimeout(typeWriter, 40);
       } else {
-        messageDiv.innerHTML = text; // remove cursor at end
+        messageDiv.textContent = text; // remove cursor
       }
     }
     typeWriter();
 
-    // Create falling flowers 🌸
+    // Falling flowers 🌸
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
@@ -138,12 +141,9 @@
       flower.style.animationDuration = (4 + Math.random() * 5) + "s";
       document.body.appendChild(flower);
 
-      setTimeout(() => {
-        flower.remove();
-      }, 10000);
+      setTimeout(() => flower.remove(), 10000);
     }
-
-    setInterval(createFlower, 500);
+    setInterval(createFlower, 600);
   </script>
 
 </body>
