@@ -54,12 +54,10 @@
     @keyframes fall {
       to { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
     }
-    /* Play button (in case browser blocks autoplay) */
+    /* Play button */
     #playBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 18px;
+      margin-top: 20px;
+      padding: 10px 20px;
       background: #ff69b4;
       color: white;
       border: none;
@@ -75,13 +73,12 @@
   <div class="card">
     <div class="title">💌 A Note for Nisha 💌</div>
     <div id="message"></div>
+    <button id="playBtn">🎵 Play Music</button>
   </div>
 
-  <!-- Background music -->
-  <audio id="bg-music" autoplay loop muted>
+  <audio id="bg-music" loop>
     <source src="https://cdn.pixabay.com/audio/2022/10/24/audio_2d3a2f3f70.mp3" type="audio/mpeg">
   </audio>
-  <button id="playBtn">🎵 Play Music</button>
 
   <script>
     // Message content
@@ -119,7 +116,7 @@
     }
     typeWriter();
 
-    // Flowers falling
+    // Falling flowers
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
@@ -132,22 +129,11 @@
     }
     setInterval(createFlower, 700);
 
-    // Music play fix
+    // Play music
     const music = document.getElementById("bg-music");
-    const playBtn = document.getElementById("playBtn");
-
-    // Unmute and play once user clicks anywhere
-    document.body.addEventListener("click", () => {
-      music.muted = false;
+    document.getElementById("playBtn").addEventListener("click", () => {
       music.play();
-      playBtn.style.display = "none"; // Hide button after click
-    });
-
-    // Manual play button in case click event is missed
-    playBtn.addEventListener("click", () => {
-      music.muted = false;
-      music.play();
-      playBtn.style.display = "none";
+      document.getElementById("playBtn").style.display = "none";
     });
   </script>
 
