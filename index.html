@@ -64,6 +64,14 @@
         opacity: 0.9;
       }
     }
+
+    /* hide the YouTube player */
+    #bg-music {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
   </style>
 </head>
 <body>
@@ -72,6 +80,15 @@
     <div class="title">💌 A Note for Nisha 💌</div>
     <div id="message"></div>
   </div>
+
+  <!-- Taylor Swift YouTube Embed (replace VIDEO_ID with your fav song) -->
+  <iframe 
+    id="bg-music"
+    src="https://www.youtube.com/embed/K-a8s8OLBSE?autoplay=1&loop=1&playlist=K-a8s8OLBSE"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
 
   <script>
     // Your message
@@ -92,7 +109,7 @@
       "Some things in life are worth waiting for… and you are one of them.",
       "",
       "With patience,",
-      "Me"
+      "Danish"
     ];
 
     const messageDiv = document.getElementById("message");
