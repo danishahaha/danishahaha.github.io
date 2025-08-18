@@ -9,16 +9,14 @@
       padding: 0;
       height: 100vh;
       background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
-      font-family: 'Comic Sans MS', 'Courier New', cursive;
+      font-family: 'Comic Sans MS', cursive;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       overflow: hidden;
       color: #444;
     }
-
     .card {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 20px;
@@ -27,29 +25,25 @@
       max-width: 700px;
       line-height: 1.7;
       font-size: 18px;
-      z-index: 2;
       border: 2px dashed #ffb6c1;
+      z-index: 2;
     }
-
     .title {
       font-size: 26px;
       font-weight: bold;
       margin-bottom: 15px;
       color: #ff69b4;
     }
-
     .cursor {
       display: inline-block;
       width: 10px;
       background: #ff69b4;
       animation: blink 0.7s infinite;
     }
-
     @keyframes blink {
       0%, 100% { background: #ff69b4; }
       50% { background: transparent; }
     }
-
     .flower {
       position: fixed;
       top: -50px;
@@ -57,17 +51,8 @@
       animation: fall linear forwards;
       z-index: 1;
     }
-
     @keyframes fall {
       to { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
-    }
-
-    /* Hide the embedded video */
-    #bg-music {
-      position: absolute;
-      width: 0;
-      height: 0;
-      opacity: 0;
     }
   </style>
 </head>
@@ -78,10 +63,10 @@
     <div id="message"></div>
   </div>
 
-  <!-- Embedded YouTube: Daylight (Instrumental) -->
-  
-::contentReference[oaicite:1]{index=1}
-
+  <!-- Background music (public domain instrumental you added) -->
+  <audio id="bg-music" autoplay loop>
+    <source src="romantic_instrumental.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     // Your heartfelt message
@@ -107,8 +92,9 @@
 
     const messageDiv = document.getElementById("message");
 
-    // Typewriter animation
-    let text = messageLines.join("\n"), i = 0;
+    // Typewriter effect
+    let text = messageLines.join("\n");
+    let i = 0;
     function typeWriter() {
       if (i < text.length) {
         messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
@@ -120,7 +106,7 @@
     }
     typeWriter();
 
-    // Falling flower animation
+    // Falling flowers animation
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
@@ -136,4 +122,3 @@
 
 </body>
 </html>
-
