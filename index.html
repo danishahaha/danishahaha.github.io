@@ -9,14 +9,16 @@
       padding: 0;
       height: 100vh;
       background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
-      font-family: 'Comic Sans MS', cursive;
+      font-family: 'Comic Sans MS', 'Courier New', cursive;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       overflow: hidden;
       color: #444;
     }
+
     .card {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 20px;
@@ -25,25 +27,30 @@
       max-width: 700px;
       line-height: 1.7;
       font-size: 18px;
-      border: 2px dashed #ffb6c1;
       z-index: 2;
+      border: 2px dashed #ffb6c1;
+      white-space: pre-line; /* keeps line breaks */
     }
+
     .title {
       font-size: 26px;
       font-weight: bold;
       margin-bottom: 15px;
       color: #ff69b4;
     }
+
     .cursor {
       display: inline-block;
       width: 10px;
       background: #ff69b4;
       animation: blink 0.7s infinite;
     }
+
     @keyframes blink {
       0%, 100% { background: #ff69b4; }
       50% { background: transparent; }
     }
+
     .flower {
       position: fixed;
       top: -50px;
@@ -51,42 +58,42 @@
       animation: fall linear forwards;
       z-index: 1;
     }
+
     @keyframes fall {
-      to { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.9;
+      }
     }
-    #playBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 18px;
-      background: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      font-size: 16px;
+
+    iframe {
+      display: none; /* hide YouTube video, keep only music */
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="title">💌 For Nisha</div>
+    <div class="title">💌 A Note for You 💌</div>
     <div id="message"></div>
   </div>
 
-  <!-- Background piano music -->
-  <audio id="bg-music" autoplay loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6c83b7e6e2.mp3?filename=beautiful-piano-melody-10711.mp3" type="audio/mpeg">
-  </audio>
-  <button id="playBtn">🎵 Play Music</button>
+  <!-- Hidden Lover music -->
+  <iframe 
+    src="https://www.youtube.com/embed/-BjZmE2gtdo?autoplay=1&loop=1&playlist=-BjZmE2gtdo"
+    allow="autoplay"
+    width="0" height="0">
+  </iframe>
 
   <script>
+    // Your heartfelt message
     const messageLines = [
       "Hi Nisha,",
       "",
       "I know you are not ready for a relationship right now, and that’s completely okay.",
-      "I don’t want you to feel rushed or pressured, your happiness and comfort mean everything.",
+      "I don’t want you to feel rushed or pressured, your happiness and comfort mean the most to me.",
+      "",
+      "What matters is that you are being true to yourself, and I deeply respect that.",
+      "I want you to know that I will always be here, quietly and patiently,",
       "I’ll be here, waiting for the day you feel ready, whether it’s soon or far in the future.",
       "",
       "To me, you are not defined by perfection, but by the little things that make you who you are.",
@@ -95,52 +102,40 @@
       "So take all the time you need, Nisha. I’m not going anywhere.",
       "Some things in life are worth waiting for… and you are one of them.",
       "",
+      "With patience,",
       "Danish"
     ];
 
     const messageDiv = document.getElementById("message");
     let text = messageLines.join("\n");
     let i = 0;
+
+    // Typewriter effect
     function typeWriter() {
       if (i < text.length) {
-        messageDiv.innerHTML = text.substring(0, i+1).replace(/\n/g, "<br>") + "<span class='cursor'></span>";
+        messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
         i++;
-        setTimeout(typeWriter, 50);
+        setTimeout(typeWriter, 40);
       } else {
-        messageDiv.innerHTML = text.replace(/\n/g, "<br>");
+        messageDiv.textContent = text; // remove cursor
       }
     }
     typeWriter();
 
-    // Falling flowers
+    // Falling flowers animation
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
-      flower.innerText = "🌸";
+      const arr = ["🌸","🌷","🌼","💮","🌺","🌻"];
+      flower.innerHTML = arr[Math.floor(Math.random() * arr.length)];
       flower.style.left = Math.random() * 100 + "vw";
-      flower.style.animationDuration = 5 + Math.random() * 5 + "s";
+      flower.style.animationDuration = (4 + Math.random() * 5) + "s";
       document.body.appendChild(flower);
       setTimeout(() => flower.remove(), 10000);
     }
     setInterval(createFlower, 700);
-
-    // Music autoplay fallback
-    const music = document.getElementById("bg-music");
-    const playBtn = document.getElementById("playBtn");
-    playBtn.style.display = "none";
-
-    document.body.addEventListener("click", () => {
-      if (music.paused) {
-        music.play();
-      }
-    });
-
-    music.onplay = () => { playBtn.style.display = "none"; };
-    music.onpause = () => { playBtn.style.display = "block"; };
-
-    playBtn.addEventListener("click", () => {
-      music.play();
-    });
   </script>
 </body>
 </html>
+
+ 
