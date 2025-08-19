@@ -9,47 +9,46 @@
       padding: 0;
       height: 100vh;
       background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
-      font-family: 'Georgia', serif;
+      font-family: 'Comic Sans MS', 'Courier New', cursive;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       overflow: hidden;
-      color: #333;
+      color: #444;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 25px;
-      padding: 35px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      max-width: 750px;
-      line-height: 1.8;
-      font-size: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      max-width: 700px;
+      line-height: 1.7;
+      font-size: 18px;
       z-index: 2;
       border: 2px dashed #ffb6c1;
-      white-space: pre-line;
+      white-space: pre-line; /* keeps line breaks */
     }
 
     .title {
-      font-size: 30px;
+      font-size: 26px;
       font-weight: bold;
-      margin-bottom: 20px;
-      color: #ff4d88;
-      text-shadow: 1px 1px 3px rgba(255,0,100,0.3);
+      margin-bottom: 15px;
+      color: #ff69b4;
     }
 
-    .line {
-      opacity: 0;
-      transform: translateY(10px);
+    .cursor {
       display: inline-block;
-      animation: fadeIn 1s forwards;
+      width: 10px;
+      background: #ff69b4;
+      animation: blink 0.7s infinite;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes blink {
+      0%, 100% { background: #ff69b4; }
+      50% { background: transparent; }
     }
 
     .flower {
@@ -67,11 +66,8 @@
       }
     }
 
-    /* invisible button trick */
-    #autoplayFix {
-      position: absolute;
-      left: -9999px; /* hide offscreen */
-      opacity: 0;
+    iframe {
+      display: none; /* hide YouTube video, keep only music */
     }
   </style>
 </head>
@@ -81,43 +77,14 @@
     <div id="message"></div>
   </div>
 
-  <!-- Background music -->
-  <audio id="bgmusic" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2023/01/18/audio_b67b59df47.mp3?filename=romantic-piano-music-135582.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Hidden button for autoplay bypass -->
-  <button id="autoplayFix"></button>
+  <!-- Hidden Lover music -->
+  <iframe 
+    src="https://www.youtube.com/embed/-BjZmE2gtdo?autoplay=1&loop=1&playlist=-BjZmE2gtdo"
+    allow="autoplay"
+    width="0" height="0">
+  </iframe>
 
   <script>
-    const audio = document.getElementById("bgmusic");
-    const hiddenBtn = document.getElementById("autoplayFix");
-
-    // Function to fade in music
-    function playWithFade() {
-      audio.volume = 0;
-      audio.play().then(() => {
-        let vol = 0;
-        const fade = setInterval(() => {
-          if (vol < 1) {
-            vol += 0.02;
-            audio.volume = vol;
-          } else {
-            clearInterval(fade);
-          }
-        }, 150);
-      });
-    }
-
-    // Autoplay bypass trick
-    window.addEventListener("load", () => {
-      hiddenBtn.click();
-    });
-
-    hiddenBtn.addEventListener("click", () => {
-      playWithFade();
-    });
-
     // Your heartfelt message
     const messageLines = [
       "Hi Nisha,",
@@ -140,39 +107,22 @@
     ];
 
     const messageDiv = document.getElementById("message");
-    let lineIndex = 0;
+    let text = messageLines.join("\n");
+    let i = 0;
 
-    function typeLine(text, callback) {
-      let i = 0;
-      const lineEl = document.createElement("div");
-      messageDiv.appendChild(lineEl);
-
-      function typing() {
-        if (i < text.length) {
-          const span = document.createElement("span");
-          span.textContent = text.charAt(i);
-          span.classList.add("line");
-          span.style.animationDelay = (i * 0.02) + "s";
-          lineEl.appendChild(span);
-          i++;
-          setTimeout(typing, 40);
-        } else {
-          setTimeout(callback, 800);
-        }
-      }
-      typing();
-    }
-
-    function showMessage() {
-      if (lineIndex < messageLines.length) {
-        typeLine(messageLines[lineIndex], showMessage);
-        lineIndex++;
+    // Typewriter effect
+    function typeWriter() {
+      if (i < text.length) {
+        messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
+        i++;
+        setTimeout(typeWriter, 40);
+      } else {
+        messageDiv.textContent = text; // remove cursor
       }
     }
+    typeWriter();
 
-    showMessage();
-
-    // Falling flowers
+    // Falling flowers animation
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
@@ -187,4 +137,3 @@
   </script>
 </body>
 </html>
-
