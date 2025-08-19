@@ -29,7 +29,7 @@
       font-size: 18px;
       z-index: 2;
       border: 2px dashed #ffb6c1;
-      white-space: pre-line; /* keeps line breaks */
+      white-space: pre-line;
     }
 
     .title {
@@ -39,16 +39,16 @@
       color: #ff69b4;
     }
 
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background: #ff69b4;
-      animation: blink 0.7s infinite;
+    /* Fade-in effect */
+    .fade-line {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 1.2s forwards;
     }
 
-    @keyframes blink {
-      0%, 100% { background: #ff69b4; }
-      50% { background: transparent; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .flower {
@@ -65,10 +65,6 @@
         opacity: 0.9;
       }
     }
-
-    iframe {
-      display: none; /* hide YouTube video, keep only music */
-    }
   </style>
 </head>
 <body>
@@ -77,14 +73,19 @@
     <div id="message"></div>
   </div>
 
-  <!-- Hidden Lover music -->
-  <iframe 
-    src="https://www.youtube.com/embed/-BjZmE2gtdo?autoplay=1&loop=1&playlist=-BjZmE2gtdo"
-    allow="autoplay"
-    width="0" height="0">
-  </iframe>
+  <!-- Background romantic piano -->
+  <audio id="bgmusic" autoplay loop muted>
+    <source src="https://cdn.pixabay.com/download/audio/2023/01/18/audio_b67b59df47.mp3?filename=romantic-piano-music-135582.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
+    // Unlock music on first click
+    const audio = document.getElementById("bgmusic");
+    document.addEventListener("click", () => {
+      audio.muted = false;
+      audio.play();
+    }, { once: true });
+
     // Your heartfelt message
     const messageLines = [
       "Hi Nisha,",
@@ -107,22 +108,22 @@
     ];
 
     const messageDiv = document.getElementById("message");
-    let text = messageLines.join("\n");
-    let i = 0;
+    let lineIndex = 0;
 
-    // Typewriter effect
-    function typeWriter() {
-      if (i < text.length) {
-        messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
-        i++;
-        setTimeout(typeWriter, 40);
-      } else {
-        messageDiv.textContent = text; // remove cursor
+    function showNextLine() {
+      if (lineIndex < messageLines.length) {
+        const line = document.createElement("div");
+        line.textContent = messageLines[lineIndex];
+        line.classList.add("fade-line");
+        line.style.animationDelay = "0s"; // ensures each starts immediately when added
+        messageDiv.appendChild(line);
+        lineIndex++;
+        setTimeout(showNextLine, 1500); // delay between each line
       }
     }
-    typeWriter();
+    showNextLine();
 
-    // Falling flowers animation
+    // Falling flowers
     function createFlower() {
       const flower = document.createElement("div");
       flower.classList.add("flower");
@@ -137,5 +138,3 @@
   </script>
 </body>
 </html>
-
- 
