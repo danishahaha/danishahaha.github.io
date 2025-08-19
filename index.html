@@ -9,48 +9,51 @@
       padding: 0;
       height: 100vh;
       background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
-      font-family: 'Comic Sans MS', 'Courier New', cursive;
+      font-family: 'Georgia', serif;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       overflow: hidden;
-      color: #444;
+      color: #333;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-      max-width: 700px;
-      line-height: 1.7;
-      font-size: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 25px;
+      padding: 35px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      max-width: 750px;
+      line-height: 1.8;
+      font-size: 20px;
       z-index: 2;
       border: 2px dashed #ffb6c1;
       white-space: pre-line;
     }
 
     .title {
-      font-size: 26px;
+      font-size: 30px;
       font-weight: bold;
-      margin-bottom: 15px;
-      color: #ff69b4;
+      margin-bottom: 20px;
+      color: #ff4d88;
+      text-shadow: 1px 1px 3px rgba(255,0,100,0.3);
     }
 
-    /* Fade-in effect */
-    .fade-line {
+    /* Animation for line reveal */
+    .line {
       opacity: 0;
       transform: translateY(10px);
-      animation: fadeIn 1.2s forwards;
+      display: inline-block;
+      animation: fadeIn 1s forwards;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Falling flowers */
     .flower {
       position: fixed;
       top: -50px;
@@ -73,7 +76,7 @@
     <div id="message"></div>
   </div>
 
-  <!-- Background romantic piano -->
+  <!-- Romantic piano background -->
   <audio id="bgmusic" autoplay loop muted>
     <source src="https://cdn.pixabay.com/download/audio/2023/01/18/audio_b67b59df47.mp3?filename=romantic-piano-music-135582.mp3" type="audio/mpeg">
   </audio>
@@ -103,6 +106,7 @@
       "So take all the time you need, Nisha. I’m not going anywhere.",
       "Some things in life are worth waiting for… and you are one of them.",
       "",
+      
       "With patience,",
       "Danish"
     ];
@@ -110,18 +114,35 @@
     const messageDiv = document.getElementById("message");
     let lineIndex = 0;
 
-    function showNextLine() {
+    function typeLine(text, callback) {
+      let i = 0;
+      const lineEl = document.createElement("div");
+      messageDiv.appendChild(lineEl);
+
+      function typing() {
+        if (i < text.length) {
+          const span = document.createElement("span");
+          span.textContent = text.charAt(i);
+          span.classList.add("line");
+          span.style.animationDelay = (i * 0.02) + "s"; // smooth fade for each letter
+          lineEl.appendChild(span);
+          i++;
+          setTimeout(typing, 40);
+        } else {
+          setTimeout(callback, 800);
+        }
+      }
+      typing();
+    }
+
+    function showMessage() {
       if (lineIndex < messageLines.length) {
-        const line = document.createElement("div");
-        line.textContent = messageLines[lineIndex];
-        line.classList.add("fade-line");
-        line.style.animationDelay = "0s"; // ensures each starts immediately when added
-        messageDiv.appendChild(line);
+        typeLine(messageLines[lineIndex], showMessage);
         lineIndex++;
-        setTimeout(showNextLine, 1500); // delay between each line
       }
     }
-    showNextLine();
+
+    showMessage();
 
     // Falling flowers
     function createFlower() {
@@ -138,3 +159,5 @@
   </script>
 </body>
 </html>
+
+    
