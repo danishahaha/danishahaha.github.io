@@ -1,1 +1,20 @@
+<!-- Hidden audio -->
+<audio id="bg-music" loop>
+  <source src="message-in-a-bottle.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const intro = document.getElementById("intro");
+  const letter = document.getElementById("letter");
+  const music = document.getElementById("bg-music");
+
+  document.querySelector(".envelope").addEventListener("click", () => {
+    intro.style.display = "none";
+    letter.style.display = "block";
+    typeWriter();
+
+    // Start music when she taps the envelope
+    music.play().catch(err => console.log("Autoplay blocked:", err));
+  });
+</script>
 
