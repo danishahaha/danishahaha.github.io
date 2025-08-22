@@ -98,10 +98,6 @@
         opacity: 0.9;
       }
     }
-
-    iframe {
-      display: none; /* keep background music hidden */
-    }
   </style>
 </head>
 <body>
@@ -117,18 +113,16 @@
     <div id="message"></div>
   </div>
 
-  <!-- Hidden Message in a Bottle music -->
-  <iframe 
-    id="bg-music"
-    src="https://www.youtube.com/embed/lBPukY41WUo?autoplay=1&loop=1&playlist=lBPukY41WUo"
-    allow="autoplay"
-    width="0" height="0">
-  </iframe>
+  <!-- Background Music -->
+  <audio id="bg-music" autoplay loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Komiku/Its_time_for_adventure/Komiku_-_07_-_Friends.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     const intro = document.getElementById("intro");
     const letter = document.getElementById("letter");
     const messageDiv = document.getElementById("message");
+    const music = document.getElementById("bg-music");
 
     const messageLines = [
       "Hi Nisha,",
@@ -154,6 +148,7 @@
     document.querySelector(".envelope").addEventListener("click", () => {
       intro.style.display = "none";
       letter.style.display = "block";
+      music.play().catch(err => console.log("Autoplay blocked, user must tap: ", err));
       typeWriter();
     });
 
@@ -185,4 +180,5 @@
   </script>
 </body>
 </html>
+
 
