@@ -8,7 +8,7 @@
       margin: 0;
       padding: 0;
       height: 100vh;
-      background: linear-gradient(135deg, #dbeeff, #fff0f6, #e8ffe6);
+      background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
       font-family: 'Comic Sans MS', 'Courier New', cursive;
       display: flex;
       justify-content: center;
@@ -18,36 +18,39 @@
       color: #444;
     }
 
-    /* Intro envelope */
+    /* Intro Screen */
     #intro {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      background: #fff;
-      border: 2px dashed #ffb6c1;
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-      max-width: 500px;
-      cursor: pointer;
-      transition: transform 0.4s ease;
-    }
-    #intro:hover {
-      transform: scale(1.05);
-    }
-    #intro h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #ff69b4;
-    }
-    #intro p {
-      font-size: 18px;
-      color: #666;
+      height: 100vh;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, #ffe6f0, #fff9e6, #e6f7ff);
+      z-index: 10;
     }
 
-    /* Hidden card */
+    .envelope {
+      font-size: 80px;
+      cursor: pointer;
+      animation: bounce 1.5s infinite;
+    }
+
+    .tap-text {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #ff69b4;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Letter Card */
     .card {
       display: none;
       background: rgba(255, 255, 255, 0.9);
@@ -59,7 +62,7 @@
       font-size: 18px;
       z-index: 2;
       border: 2px dashed #ffb6c1;
-      white-space: pre-line; /* keeps line breaks */
+      white-space: pre-line;
     }
 
     .title {
@@ -97,26 +100,27 @@
     }
 
     iframe {
-      display: none; /* hide YouTube video, keep only music */
+      display: none; /* keep background music hidden */
     }
   </style>
 </head>
 <body>
-  <!-- Intro "sealed letter" -->
+  <!-- Intro Screen -->
   <div id="intro">
-    <h1>💌 You’ve got a Letter 💌</h1>
-    <p>Tap to open it...</p>
+    <div class="envelope">✉️</div>
+    <div class="tap-text">Tap the letter to open 💌</div>
   </div>
 
-  <!-- Hidden card (reveals after tap) -->
+  <!-- Main Letter -->
   <div class="card" id="letter">
     <div class="title">💌 A Note for You 💌</div>
     <div id="message"></div>
   </div>
 
   <!-- Hidden Message in a Bottle music -->
-  <iframe id="music"
-    src="https://www.youtube.com/embed/1P3vn9fXbVw?enablejsapi=1&version=3&autoplay=1&loop=1&playlist=1P3vn9fXbVw"
+  <iframe 
+    id="bg-music"
+    src="https://www.youtube.com/embed/lBPukY41WUo?autoplay=1&loop=1&playlist=lBPukY41WUo"
     allow="autoplay"
     width="0" height="0">
   </iframe>
@@ -126,7 +130,6 @@
     const letter = document.getElementById("letter");
     const messageDiv = document.getElementById("message");
 
-    // Your heartfelt message
     const messageLines = [
       "Hi Nisha,",
       "",
@@ -147,29 +150,24 @@
       "Danish"
     ];
 
-    // On tap → reveal letter + start typewriter + play music
-    intro.addEventListener("click", () => {
+    // Show letter after tapping
+    document.querySelector(".envelope").addEventListener("click", () => {
       intro.style.display = "none";
       letter.style.display = "block";
-      startMessage();
-      playMusic();
+      typeWriter();
     });
 
-    let i = 0;
+    // Typewriter effect
     let text = messageLines.join("\n");
-
-    function startMessage() {
-      function typeWriter() {
-        if (i < text.length) {
-          messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
-          i++;
-          setTimeout(typeWriter, 40);
-        } else {
-          messageDiv.textContent = text;
-        }
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
+        i++;
+        setTimeout(typeWriter, 40);
+      } else {
+        messageDiv.textContent = text;
       }
-      typeWriter();
-      setInterval(createFlower, 700);
     }
 
     // Falling flowers
@@ -183,12 +181,8 @@
       document.body.appendChild(flower);
       setTimeout(() => flower.remove(), 10000);
     }
-
-    // YouTube autoplay workaround (user gesture)
-    function playMusic() {
-      const iframe = document.getElementById("music");
-      iframe.src = iframe.src; // reload to force play after click
-    }
+    setInterval(createFlower, 700);
   </script>
 </body>
 </html>
+
