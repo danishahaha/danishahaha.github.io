@@ -96,6 +96,17 @@
         opacity: 0.9;
       }
     }
+
+    #playButton {
+      margin-top: 15px;
+      background: #ff69b4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -103,6 +114,7 @@
   <div id="intro">
     <div class="envelope">✉️</div>
     <div class="tap-text">Tap the letter to open 💌</div>
+    <button id="playButton">▶️ Play Music</button>
   </div>
 
   <!-- Main Letter -->
@@ -111,16 +123,17 @@
     <div id="message"></div>
   </div>
 
-  <!-- Hidden YouTube Music Player -->
-  <iframe id="ytplayer" type="text/html" width="0" height="0"
-    src="https://www.youtube.com/embed/-BjZmE2gtdo?autoplay=1&loop=1&playlist=-BjZmE2gtdo"
-    frameborder="0" allow="autoplay">
-  </iframe>
+  <!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Keys_of_Moon/Enchanted/Keys_of_Moon_-_Lovers.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     const intro = document.getElementById("intro");
     const letter = document.getElementById("letter");
     const messageDiv = document.getElementById("message");
+    const music = document.getElementById("bg-music");
+    const playBtn = document.getElementById("playButton");
 
     const messageLines = [
       "Hi Nisha,",
@@ -146,7 +159,16 @@
     document.querySelector(".envelope").addEventListener("click", () => {
       intro.style.display = "none";
       letter.style.display = "block";
+      music.play().catch(() => {
+        playBtn.style.display = "inline-block";
+      });
       typeWriter();
+    });
+
+    // Play button fallback
+    playBtn.addEventListener("click", () => {
+      music.play();
+      playBtn.style.display = "none";
     });
 
     // Typewriter effect
