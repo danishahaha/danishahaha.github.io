@@ -96,17 +96,6 @@
         opacity: 0.9;
       }
     }
-
-    #playButton {
-      margin-top: 15px;
-      background: #ff69b4;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -114,7 +103,6 @@
   <div id="intro">
     <div class="envelope">✉️</div>
     <div class="tap-text">Tap the letter to open 💌</div>
-    <button id="playButton">▶️ Play Music</button>
   </div>
 
   <!-- Main Letter -->
@@ -124,9 +112,8 @@
   </div>
 
   <!-- Background Music -->
-  <audio id="bg-music" loop>
-    <!-- Free music (replace with your own mp3 later if you want) -->
-    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Komiku/Its_time_for_adventure/Komiku_-_07_-_Friends.mp3" type="audio/mpeg">
+  <audio id="bg-music" autoplay loop muted>
+    <source src="message-in-a-bottle.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -134,7 +121,6 @@
     const letter = document.getElementById("letter");
     const messageDiv = document.getElementById("message");
     const music = document.getElementById("bg-music");
-    const playBtn = document.getElementById("playButton");
 
     const messageLines = [
       "Hi Nisha,",
@@ -160,17 +146,12 @@
     document.querySelector(".envelope").addEventListener("click", () => {
       intro.style.display = "none";
       letter.style.display = "block";
-      music.play().catch(() => {
-        // if blocked, show play button
-        playBtn.style.display = "inline-block";
-      });
-      typeWriter();
-    });
 
-    // Play button fallback
-    playBtn.addEventListener("click", () => {
-      music.play();
-      playBtn.style.display = "none";
+      // unmute and play song
+      music.muted = false;
+      music.play().catch(()=>{});
+      
+      typeWriter();
     });
 
     // Typewriter effect
