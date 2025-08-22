@@ -1,126 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Letter for Nisha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
-      font-family: 'Comic Sans MS', 'Courier New', cursive;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-      color: #444;
+    body{
+      margin:0; height:100vh; display:flex; justify-content:center; align-items:center;
+      background:linear-gradient(135deg,#ffe6f0,#e6f7ff,#fff9e6);
+      font-family:'Comic Sans MS','Courier New',cursive; color:#444; overflow:hidden;
     }
-
-    #intro {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: linear-gradient(135deg, #ffe6f0, #fff9e6, #e6f7ff);
-      z-index: 10;
+    /* Intro */
+    #intro{
+      position:fixed; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center;
+      background:linear-gradient(135deg,#ffe6f0,#fff9e6,#e6f7ff); z-index:10; text-align:center;
     }
+    .envelope{ font-size:84px; cursor:pointer; animation:bounce 1.5s infinite }
+    .tap-text{ margin-top:14px; color:#ff69b4; font-size:18px }
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-    .envelope {
-      font-size: 80px;
-      cursor: pointer;
-      animation: bounce 1.5s infinite;
+    /* Letter card */
+    .card{
+      display:none; background:rgba(255,255,255,0.9); border-radius:20px; padding:30px;
+      box-shadow:0 6px 15px rgba(0,0,0,0.1); max-width:700px; white-space:pre-line; border:2px dashed #ffb6c1;
     }
+    .title{ font-size:26px; font-weight:bold; margin-bottom:15px; color:#ff69b4 }
+    .cursor{ display:inline-block; width:10px; background:#ff69b4; animation:blink .7s infinite }
+    @keyframes blink{0%,100%{background:#ff69b4}50%{background:transparent}}
 
-    .tap-text {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #ff69b4;
-    }
+    /* Falling flowers */
+    .flower{ position:fixed; top:-50px; font-size:28px; animation:fall linear forwards; z-index:1 }
+    @keyframes fall{ to{ transform:translateY(110vh) rotate(360deg); opacity:.9 } }
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .card {
-      display: none;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-      max-width: 700px;
-      line-height: 1.7;
-      font-size: 18px;
-      z-index: 2;
-      border: 2px dashed #ffb6c1;
-      white-space: pre-line;
-    }
-
-    .title {
-      font-size: 26px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #ff69b4;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background: #ff69b4;
-      animation: blink 0.7s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { background: #ff69b4; }
-      50% { background: transparent; }
-    }
-
-    .flower {
-      position: fixed;
-      top: -50px;
-      font-size: 28px;
-      animation: fall linear forwards;
-      z-index: 1;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0.9;
-      }
+    /* optional play button if autoplay blocked */
+    #playBtn{
+      margin-top:12px; background:#ff69b4; color:#fff; border:0; padding:10px 18px; border-radius:12px; display:none; cursor:pointer;
     }
   </style>
 </head>
 <body>
-  <!-- Intro Screen -->
+  <!-- Intro -->
   <div id="intro">
-    <div class="envelope">✉️</div>
+    <div class="envelope" id="openLetter" aria-label="Tap to open letter">✉️</div>
     <div class="tap-text">Tap the letter to open 💌</div>
+    <button id="playBtn">▶️ Play Music</button>
   </div>
 
-  <!-- Main Letter -->
+  <!-- Letter -->
   <div class="card" id="letter">
     <div class="title">💌 A Note for You 💌</div>
     <div id="message"></div>
   </div>
 
-  <!-- Background Music -->
-  <audio id="bg-music" autoplay loop muted>
-    <source src="message-in-a-bottle.mp3" type="audio/mpeg">
+  <!-- Royalty-free background music (free to use) -->
+  <!-- Option A (default): gentle romantic piano -->
+  <audio id="bg-music" preload="auto" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5a4e4e9c65.mp3?filename=romantic-piano-melody-12472.mp3" type="audio/mpeg">
   </audio>
+  <!-- Option B (brighter, hopeful piano) — swap src to use this instead
+  <audio id="bg-music" preload="auto" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2021/11/18/audio_3a2c2e6d5b.mp3?filename=inspiring-piano-ambient-11306.mp3" type="audio/mpeg">
+  </audio>
+  -->
 
   <script>
-    const intro = document.getElementById("intro");
-    const letter = document.getElementById("letter");
-    const messageDiv = document.getElementById("message");
-    const music = document.getElementById("bg-music");
+    const intro = document.getElementById('intro');
+    const openLetter = document.getElementById('openLetter');
+    const letter = document.getElementById('letter');
+    const messageDiv = document.getElementById('message');
+    const music = document.getElementById('bg-music');
+    const playBtn = document.getElementById('playBtn');
 
     const messageLines = [
       "Hi Nisha,",
@@ -142,46 +91,56 @@
       "Danish"
     ];
 
-    // Show letter after tapping
-    document.querySelector(".envelope").addEventListener("click", () => {
-      intro.style.display = "none";
-      letter.style.display = "block";
-
-      // unmute and play song
-      music.muted = false;
-      music.play().catch(()=>{});
-      
-      typeWriter();
-    });
-
-    // Typewriter effect
-    let text = messageLines.join("\n");
-    let i = 0;
-    function typeWriter() {
-      if (i < text.length) {
-        messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
-        i++;
-        setTimeout(typeWriter, 40);
-      } else {
-        messageDiv.textContent = text;
-      }
+    function typeWriter(text){
+      let i = 0;
+      (function step(){
+        if(i < text.length){
+          messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
+          i++; setTimeout(step, 40);
+        }else{
+          messageDiv.textContent = text;
+        }
+      })();
     }
 
-    // Falling flowers
-    function createFlower() {
-      const flower = document.createElement("div");
-      flower.classList.add("flower");
-      const arr = ["🌸","🌷","🌼","💮","🌺","🌻"];
-      flower.innerHTML = arr[Math.floor(Math.random() * arr.length)];
-      flower.style.left = Math.random() * 100 + "vw";
-      flower.style.animationDuration = (4 + Math.random() * 5) + "s";
-      document.body.appendChild(flower);
-      setTimeout(() => flower.remove(), 10000);
+    function fadeInPlay(){
+      music.volume = 0;
+      music.play().then(()=>{
+        let v = 0;
+        const t = setInterval(()=>{
+          v = Math.min(1, v + 0.03);
+          music.volume = v;
+          if(v >= 1) clearInterval(t);
+        }, 120);
+      }).catch(()=>{
+        playBtn.style.display = 'inline-block';
+      });
+    }
+
+    openLetter.addEventListener('click', ()=>{
+      intro.style.display = 'none';
+      letter.style.display = 'block';
+      typeWriter(messageLines.join("\n"));
+      fadeInPlay(); // user tap allows audio on mobile
+    }, { once:true });
+
+    playBtn.addEventListener('click', ()=>{
+      fadeInPlay();
+      playBtn.style.display = 'none';
+    });
+
+    // Cute falling flowers
+    function createFlower(){
+      const f = document.createElement('div');
+      f.className = 'flower';
+      f.textContent = ["🌸","🌷","🌼","💮","🌺","🌻"][Math.floor(Math.random()*6)];
+      f.style.left = Math.random()*100 + "vw";
+      f.style.animationDuration = (4 + Math.random()*5) + "s";
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(), 10000);
     }
     setInterval(createFlower, 700);
   </script>
 </body>
 </html>
-
-    
 
