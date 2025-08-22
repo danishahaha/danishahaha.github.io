@@ -9,15 +9,13 @@
       padding: 0;
       height: 100vh;
       background: linear-gradient(135deg, #ffe6f0, #e6f7ff, #fff9e6);
-      font-family: 'Comic Sans MS', 'Courier New', cursive;
+      font-family: 'Comic Sans MS', cursive;
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
       overflow: hidden;
       color: #444;
     }
-
     iframe {
       position: fixed;
       top: 0;
@@ -26,41 +24,33 @@
       height: 0;
       border: none;
     }
-
     #intro {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
       background: linear-gradient(135deg, #ffe6f0, #fff9e6, #e6f7ff);
       z-index: 10;
     }
-
     .envelope {
       font-size: 80px;
       cursor: pointer;
       animation: bounce 1.5s infinite;
     }
-
     .tap-text {
       margin-top: 20px;
       font-size: 18px;
       color: #ff69b4;
     }
-
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      0%,100% {transform: translateY(0);}
+      50% {transform: translateY(-10px);}
     }
-
     .card {
       display: none;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255,255,255,0.9);
       border-radius: 20px;
       padding: 30px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
@@ -70,29 +60,22 @@
       z-index: 2;
       border: 2px dashed #ffb6c1;
       white-space: pre-line;
-      position: relative;
     }
-
     .title {
       font-size: 26px;
-      font-weight: bold;
-      margin-bottom: 15px;
       color: #ff69b4;
+      margin-bottom: 15px;
     }
-
     .cursor {
       display: inline-block;
       width: 10px;
       background: #ff69b4;
       animation: blink 0.7s infinite;
     }
-
     @keyframes blink {
-      0%, 100% { background: #ff69b4; }
-      50% { background: transparent; }
+      0%,100% {background: #ff69b4;}
+      50% {background: transparent;}
     }
-
-    /* Falling flowers */
     .flower {
       position: fixed;
       top: -10px;
@@ -101,26 +84,24 @@
       z-index: 1;
       pointer-events: none;
     }
-
     @keyframes fall {
-      to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0.7;
-      }
+      to {transform: translateY(110vh) rotate(360deg); opacity: 0.7;}
     }
   </style>
 </head>
 <body>
-  <!-- Hidden YouTube background music -->
-  <iframe id="ytplayer" src="https://www.youtube.com/embed/q0hyYWKXF0Q?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=q0hyYWKXF0Q" allow="autoplay"></iframe>
-
-  <!-- Intro Screen -->
+  <!-- Hidden YouTube Piano Cover -->
+  <iframe id="ytplayer"
+    src="https://www.youtube.com/embed/Srpjcpn4ZHQ?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=Srpjcpn4ZHQ"
+    allow="autoplay"></iframe>
+  
+  <!-- Intro -->
   <div id="intro">
     <div class="envelope">✉️</div>
     <div class="tap-text">Tap the letter to open 💌</div>
   </div>
 
-  <!-- Main Letter -->
+  <!-- Letter Card -->
   <div class="card" id="letter">
     <div class="title">💌 A Note for You 💌</div>
     <div id="message"></div>
@@ -130,7 +111,6 @@
     const intro = document.getElementById("intro");
     const letter = document.getElementById("letter");
     const messageDiv = document.getElementById("message");
-
     const messageLines = [
       "Hi Nisha,",
       "",
@@ -147,74 +127,59 @@
       "So take all the time you need, Nisha. I’m not going anywhere.",
       "Some things in life are worth waiting for… and you are one of them.",
       "",
-      "With patience,",
-      "Danish"
+      "With patience,","Danish"
     ];
 
-    // Typewriter effect
-    let text = messageLines.join("\n");
-    let i = 0;
-
-    function typeWriter() {
-      if (i < text.length) {
-        messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
-        i++;
-        setTimeout(typeWriter, 40);
-      } else {
-        messageDiv.textContent = text;
-      }
-    }
-
-    // Load YouTube API
-    function onYouTubeIframeAPIReady() {
-      window.player = new YT.Player('ytplayer');
-    }
-
-    var tag = document.createElement('script');
+    const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     document.body.appendChild(tag);
+    window.onYouTubeIframeAPIReady = () => {
+      window.player = new YT.Player('ytplayer');
+    };
 
-    // Fade-in music
     function fadeInMusic() {
-      let volume = 0;
-      let interval = setInterval(() => {
-        if (volume < 100) {
-          volume += 2;
-          player.setVolume(volume);
-        } else {
-          clearInterval(interval);
-        }
+      let vol = 0;
+      const id = setInterval(() => {
+        if(vol < 100) player.setVolume(vol += 2);
+        else clearInterval(id);
       }, 200);
     }
 
-    // Create falling flowers
-    function createFlower() {
-      const flowers = ["🌸","🌹","🌺","🌷","💮"];
-      const flower = document.createElement("div");
-      flower.className = "flower";
-      flower.textContent = flowers[Math.floor(Math.random()*flowers.length)];
-      flower.style.left = Math.random()*100 + "vw";
-      flower.style.animationDuration = (3 + Math.random()*5) + "s";
-      flower.style.fontSize = (20 + Math.random()*20) + "px";
-      document.body.appendChild(flower);
-
-      setTimeout(() => {
-        flower.remove();
-      }, 8000);
+    function typeWriter(text){
+      let i = 0;
+      (function write(){
+        if(i < text.length){
+          messageDiv.innerHTML = text.substring(0, i+1) + "<span class='cursor'></span>";
+          i++;
+          setTimeout(write, 40);
+        } else messageDiv.textContent = text;
+      })();
     }
 
-    // Open letter
-    document.querySelector(".envelope").addEventListener("click", () => {
+    function createFlower(){
+      const petals = ["🌸","🌹","🌺","🌷"];
+      const f = document.createElement("div");
+      f.className = "flower";
+      f.textContent = petals[Math.floor(Math.random()*petals.length)];
+      f.style.left = Math.random()*100 + "vw";
+      f.style.fontSize = (20 + Math.random()*20) + "px";
+      f.style.animationDuration = (3 + Math.random()*5) + "s";
+      document.body.appendChild(f);
+      setTimeout(() => f.remove(), 8000);
+    }
+
+    document.querySelector(".envelope").addEventListener("click", ()=>{
       intro.style.display = "none";
       letter.style.display = "block";
-      typeWriter();
-      if (window.player) {
+      typeWriter(messageLines.join("\n"));
+      if(window.player){
         player.unMute();
         player.setVolume(0);
         fadeInMusic();
       }
-      setInterval(createFlower, 400); // keep flowers falling
+      setInterval(createFlower, 400);
     });
   </script>
 </body>
 </html>
+
