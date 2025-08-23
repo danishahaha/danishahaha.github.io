@@ -92,8 +92,8 @@
       50% { background: transparent; }
     }
 
-    /* Falling flowers */
-    .flower {
+    /* Falling flowers and hearts */
+    .falling {
       position: fixed;
       top: -10px;
       font-size: 24px;
@@ -112,7 +112,7 @@
 </head>
 <body>
   <!-- Hidden YouTube background music -->
-  <iframe id="ytplayer" src="https://www.youtube.com/embed/-BjZmE2gtdo?enablejsapi=1&mute=1&loop=1&playlist=-BjZmE2gtdo" allow="autoplay"></iframe>
+  <iframe id="ytplayer" src="https://www.youtube.com/embed/nna9fA1wHFI?enablejsapi=1&mute=1&loop=1&playlist=nna9fA1wHFI" allow="autoplay"></iframe>
 
   <!-- Intro Screen -->
   <div id="intro">
@@ -187,19 +187,19 @@
       }, 200);
     }
 
-    // Create falling flowers
-    function createFlower() {
-      const flowers = ["🌸","🌹","🌺","🌷","💮"];
-      const flower = document.createElement("div");
-      flower.className = "flower";
-      flower.textContent = flowers[Math.floor(Math.random()*flowers.length)];
-      flower.style.left = Math.random()*100 + "vw";
-      flower.style.animationDuration = (3 + Math.random()*5) + "s";
-      flower.style.fontSize = (20 + Math.random()*20) + "px";
-      document.body.appendChild(flower);
+    // Create falling flowers and hearts
+    function createFalling() {
+      const items = ["🌸","🌹","🌺","🌷","💮","❤️","💕","💖"];
+      const fall = document.createElement("div");
+      fall.className = "falling";
+      fall.textContent = items[Math.floor(Math.random()*items.length)];
+      fall.style.left = Math.random()*100 + "vw";
+      fall.style.animationDuration = (3 + Math.random()*5) + "s";
+      fall.style.fontSize = (20 + Math.random()*25) + "px";
+      document.body.appendChild(fall);
 
       setTimeout(() => {
-        flower.remove();
+        fall.remove();
       }, 8000);
     }
 
@@ -213,7 +213,7 @@
         player.setVolume(0);
         fadeInMusic();
       }
-      setInterval(createFlower, 400); // keep flowers falling
+      setInterval(createFalling, 400); // keep falling hearts + flowers
     });
   </script>
 </body>
